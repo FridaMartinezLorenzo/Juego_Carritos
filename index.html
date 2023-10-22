@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Mi Canvas</title>
-</head>
-<body>
-    <canvas id="miCanvas" width="400" height="300"></canvas>
+	<head>
+		<meta charset="utf-8">
+		
+		<title>Canvas</title>
+	</head>
 
-    <script>
-        // Aquí puedes agregar JavaScript para interactuar con el canvas
-        var canvas = document.getElementById("miCanvas");
-        var ctx = canvas.getContext("2d");
-
-        // Ejemplo: Dibujar un rectángulo rojo en el canvas
-        ctx.fillStyle = "red";
-        ctx.fillRect(50, 50, 200, 100);
-    </script>
-</body>
+    <style>
+        canvas{
+            border: 1px solid black;
+            margin-top: 100px;
+            margin-left: 10px;
+        }
+    </style>
+	<body>
+        <div class = "zona_juego">
+			<canvas id="area_juego" width="1250" height="400">
+				Tu navegador no sporta canvas				
+			</canvas>
+        </div>
+			
+		<script type="text/javascript" src="escenario.js"></script>
+	</body>
 </html>
