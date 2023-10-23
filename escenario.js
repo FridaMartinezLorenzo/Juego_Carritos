@@ -8,9 +8,11 @@ var y_pista = 100;
 
 var img = new Image();
 img.src = "assets/yellow_car.png";
-
 var img_start = new Image();
 img_start.src = "assets/frente_yellow_car.png";
+
+var img_car_enemigo = new Image();
+img_car_enemigo.src = "assets/purple_car.png";
 
 var x = 0; //Aqui es donde va a empezar
 var y = y_pista+110;
@@ -24,7 +26,17 @@ var pasos = 10;
 car_ancho = 150;
 car_altura = 100;
 margen_desaparicion_carrito = 140;
+intervalo_carrito = 30;
 
+var contador = 0;
+
+//Variables para carrito enemigo
+var x_enemigo = canvas.width;
+var y_enemigo = y_pista + 10;
+var intervalo_carrito_enemigo = 40;
+var dx_carrito_enemigo = 2;
+car_ancho_enemigo = 120;
+car_altura_enemigo = 80;
 
 //Variables del boton
 inicio_x_boton = canvas.width/2-100;
@@ -62,10 +74,10 @@ canvas.addEventListener("click", function(event) {
 
     // Verifica si el clic está dentro del botón, INICIA EL JUEGOOOOOO
     if (x_click >= inicio_x_boton &&  x_click <= inicio_x_boton+ancho_boton && y_click >= inicio_y_boton  && y_click <= inicio_y_boton+alto_boton ) {
-        setInterval(draw,50);
+        setInterval(draw,intervalo_carrito);
+        //setInterval(dibujar_carrito_enemigo,intervalo_carrito_enemigo);
     }
 });
-
 
 function detectarTecla(e){
     if (e.keyCode == 39){
@@ -101,6 +113,9 @@ function detectarTecla(e){
 }
 
 function cuadro_inicial(){
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
     ctx.fillStyle = "#FF69B4";
     ctx.fillRect(canvas.width/2-200,canvas.height/2-100,400,200);
     
@@ -129,19 +144,34 @@ function cuadro_inicial(){
 }
 
 function draw(){
-    //Rosa y morado #EE97E5
-    ctx.fillStyle = "#FF97D9";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    //ctx.clearRect(0,0,canvas.width,canvas.height); //Agarra el color de fondo de forma automatica
-    dibujar_pista();
+    draw_escenario();
     dibujar_carrito();
     x += dx;
     if (x > canvas.width-margen_desaparicion_carrito || x < 0)
         dx = (-1)*dx;
+
+    contador += 1;
+    if (contador > 20)
+        dibujar_carrito_enemigo();
+}
+
+
+function draw_escenario(){
+     //Rosa y morado #EE97E5
+     ctx.fillStyle = "#FF97D9";
+     ctx.fillRect(0,0,canvas.width,canvas.height);
+     dibujar_pista();
 }
 
 function dibujar_carrito(){
     ctx.drawImage(img, x, y, car_ancho, car_altura);
+}
+
+function dibujar_carrito_enemigo(){
+    ctx.drawImage(img_car_enemigo, x_enemigo, y_enemigo, car_ancho_enemigo, car_altura_enemigo);
+    x_enemigo -= dx_carrito_enemigo;
+    //if (x_enemigo < canvas.width/2)
+    //    dx_carrito_enemigo = (-1)*dx_carrito_enemigo;
 }
 
 function dibujar_pista(){
