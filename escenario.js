@@ -7,7 +7,10 @@ var ancho_pista = 210; // Ancho de la pista, se añaden los 10 por la linea divi
 var y_pista = 100;
 
 var img = new Image();
-img.src = "yellow_car.png";
+img.src = "assets/yellow_car.png";
+
+var img_start = new Image();
+img_start.src = "assets/frente_yellow_car.png";
 
 var x = 0; //Aqui es donde va a empezar
 var y = y_pista+110;
@@ -15,10 +18,19 @@ var y = y_pista+110;
 var dx = 2;
 var dy = 2;
 
+var pasos = 10;
+
 //Variables para el carrito
 car_ancho = 150;
 car_altura = 100;
 margen_desaparicion_carrito = 140;
+
+
+//Variables del boton
+inicio_x_boton = canvas.width/2-100;
+inicio_y_boton = canvas.height/2;
+ancho_boton = 200;
+alto_boton = 50;
 //var nivel = 1;
 //Trabajamos en la animación de la pistas
 
@@ -29,11 +41,98 @@ margen_desaparicion_carrito = 140;
 //}
 
 
-img.onload = function (){ //carga la imagen y despues ejecuta la funcion 
-    setInterval(draw,10);
+img.onload = function (){ 
+
+}
+
+img_start.onload = function (){ //carga la imagen y despues ejecuta la funcion 
+        cuadro_inicial();
+    // setInterval(draw,50);
+}
+document.addEventListener("keydown",detectarTecla);
+canvas.addEventListener("click", function(event) {
+    console.log("click");
+    var rect = canvas.getBoundingClientRect();
+    var x_click = event.clientX - rect.left;
+    var y_click = event.clientY - rect.top;
+
+    console.log("x: " + x_click + " y: " + y_click);
+    console.log("inicio_x_boton: " + inicio_x_boton + " inicio_y_boton: " + inicio_y_boton);
+    console.log("ancho_boton: " + ancho_boton + " alto_boton: " + alto_boton);
+
+    // Verifica si el clic está dentro del botón, INICIA EL JUEGOOOOOO
+    if (x_click >= inicio_x_boton &&  x_click <= inicio_x_boton+ancho_boton && y_click >= inicio_y_boton  && y_click <= inicio_y_boton+alto_boton ) {
+        setInterval(draw,50);
+    }
+});
+
+
+function detectarTecla(e){
+    if (e.keyCode == 39){
+        //console.log("Avanzando a derecha")
+        x +=  pasos;
+    }
+
+    if (e.keyCode == 37){
+        //console.log("Avanzando a izquierda")
+        x -= pasos;
+    }
+
+    if (e.keyCode == 40){
+        //console.log("Avanzando hacia abajo")
+        y += pasos;
+    }
+    
+    if (e.keyCode == 38){
+        //console.log("Avanzando hacia arriba")
+        y -= pasos;
+    }
+
+    if (y <= y_pista)
+        y = y_pista;
+    if (y >= ancho_pista)
+        y = ancho_pista;
+
+    if (x <= 0)
+        x = 0;
+
+    if (x >= canvas.width-margen_desaparicion_carrito)
+        x = canvas.width-margen_desaparicion_carrito;
+}
+
+function cuadro_inicial(){
+    ctx.fillStyle = "#FF69B4";
+    ctx.fillRect(canvas.width/2-200,canvas.height/2-100,400,200);
+    
+    ctx.fillStyle = "#FF97D9";
+    ctx.fillRect(canvas.width/2-210,canvas.height/2-106,400,200);
+
+    ctx.drawImage(img_start, canvas.width/2-150,10, 300, 200);
+
+    //Dibujamos el boton
+    ctx.fillStyle = "#FF69B4";
+    ctx.fillRect(inicio_x_boton,inicio_y_boton,200,50);
+
+    // Configura el estilo del texto
+    ctx.font = "20px Times New Roman";
+    ctx.fillStyle = "white";
+
+    // Centra el texto en el botón
+    var buttonText = "START";
+    var textWidth = ctx.measureText(buttonText).width;
+    var xText = (canvas.width / 2) - (textWidth / 2);
+    var yText = (canvas.height / 2 + 20) + 10;
+
+    // Dibuja el texto en el botón
+    ctx.fillText(buttonText, xText, yText);
+
 }
 
 function draw(){
+    //Rosa y morado #EE97E5
+    ctx.fillStyle = "#FF97D9";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    //ctx.clearRect(0,0,canvas.width,canvas.height); //Agarra el color de fondo de forma automatica
     dibujar_pista();
     dibujar_carrito();
     x += dx;
