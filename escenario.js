@@ -12,7 +12,7 @@ var img_start = new Image();
 img_start.src = "assets/frente_yellow_car.png";
 
 var img_car_enemigo = new Image();
-img_car_enemigo.src = "assets/purple_car.png";
+img_car_enemigo.src = "assets/pink_car.png";
 
 var x = 0; //Aqui es donde va a empezar
 var y = y_pista+110;
