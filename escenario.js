@@ -43,6 +43,30 @@ inicio_x_boton = canvas.width/2-100;
 inicio_y_boton = canvas.height/2;
 ancho_boton = 200;
 alto_boton = 50;
+
+
+//Creamos una matriz donde almacenaremos la información de los niveles
+//Cada nivel es una matriz, cada elemento de la matriz es un objeto que contiene:
+//El carrito o premio que se va a dibujar, en que punto se va a dibujar (con respecto al contador) y su ubicacion x, y
+let L = [
+    [   //primer nivel (0)
+        [{e:0},{e:0},{e:0},{e:0},{e:0},{e:2},{e:0},{e:0},{e:0}],
+    ],
+    [   //segundo nivel (1)
+        [{e:2},{e:3},{e:0},{e:1},{e:1},{e:3},{e:2},{e:0},{e:2}], 
+        [{e:3},{e:1},{e:2},{e:0},{e:3},{e:0},{e:1},{e:2},{e:3}],
+        [{e:2},{e:0},{e:1},{e:1},{e:2},{e:2},{e:0},{e:3},{e:3}],
+    ],
+    [   //tercer nivel (2)
+        [{e:2},{e:3},{e:0},{e:1},{e:1},{e:3},{e:2},{e:0},{e:2}], 
+        [{e:3},{e:1},{e:2},{e:0},{e:3},{e:0},{e:1},{e:2},{e:3}],
+        [{e:2},{e:0},{e:1},{e:1},{e:2},{e:2},{e:0},{e:3},{e:3}],
+        [{e:3},{e:0},{e:0},{e:3},{e:2},{e:2},{e:0},{e:2},{e:3}],
+    ]
+    ]
+    
+
+
 //var nivel = 1;
 //Trabajamos en la animación de la pistas
 
