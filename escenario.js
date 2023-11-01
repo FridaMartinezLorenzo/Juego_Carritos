@@ -78,8 +78,16 @@ let L = [
         {car:1, appear:700,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
         {car:3, appear:1000, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
 
-        [{e:3},{e:1},{e:2},{e:0},{e:3},{e:0},{e:1},{e:2},{e:3}],
-        [{e:2},{e:0},{e:1},{e:1},{e:2},{e:2},{e:0},{e:3},{e:3}],
+        [{car:1, appear:100,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {car:1, appear:400,  x:canvas.width, y:y_pista+110, bandera_rebaso:0},
+         {car:1, appear:700,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {car:3, appear:1000, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
+
+         [{car:2, appear:100,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+          {car:3, appear:400,  x:canvas.width, y:y_pista+110, bandera_rebaso:0},
+          {car:1, appear:700,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+          {car:3, appear:1000, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
+
     ],
     [   //tercer nivel (2)
         [{e:2},{e:3},{e:0},{e:1},{e:1},{e:3},{e:2},{e:0},{e:2}], 
@@ -158,7 +166,7 @@ function detectarClick(event){
 
     // Verifica si el clic está dentro del botón, INICIA EL JUEGOOOOOO
     if (x_click >= inicio_x_boton &&  x_click <= inicio_x_boton+ancho_boton && y_click >= inicio_y_boton  && y_click <= inicio_y_boton+alto_boton ) {
-        var IntervaloJuego = setInterval(draw,intervalo_carrito);
+            IntervaloJuego = setInterval(draw,intervalo_carrito);
         //setInterval(dibujar_carrito_enemigo,intervalo_carrito_enemigo);
     }
 }
@@ -182,6 +190,11 @@ function detectarTecla(e){
     if (e.keyCode == 38){
         //console.log("Avanzando hacia arriba")
         y -= pasos;
+    }
+
+    if (e.keyCode == 32){
+       cuadro_inicial();
+       canvas.addEventListener("click", detectarClick);
     }
 
     if (y <= y_pista)
@@ -350,10 +363,11 @@ function dibujar_meta(){
                 ctx.fillStyle="dark blue"
                 ctx.fillText("Felicidades, \n pasaste el nivel: "+(nivel+1),canvas.width/2-100,150);
 
-                //clearInterval(IntervaloJuego);
+                clearInterval(IntervaloJuego);
                 nivel+=1;
                 intervalo_carrito -= 2;
                 contador = 0;
+                document.addEventListener("keydown",detectarTecla);
             }
 
 }
