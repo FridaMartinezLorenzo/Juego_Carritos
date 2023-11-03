@@ -73,28 +73,23 @@ let L = [
          {car:3, appear:1000, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
     ],
     [   //segundo nivel (1)
-       [{car:2, appear:100,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-        {car:3, appear:400,  x:canvas.width, y:y_pista+110, bandera_rebaso:0},
-        {car:1, appear:700,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-        {car:3, appear:1000, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
+       [{car:2, appear: 50,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+        {car:3, appear:350,  x:canvas.width, y:y_pista+110, bandera_rebaso:0},
+        {car:1, appear:750,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+        {car:3, appear:950, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
 
-        [{car:1, appear:100,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-         {car:1, appear:400,  x:canvas.width, y:y_pista+110, bandera_rebaso:0},
-         {car:1, appear:700,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-         {car:3, appear:1000, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
+        [{car:1, appear:1250,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {car:1, appear:1775,  x:canvas.width, y:y_pista+110, bandera_rebaso:0},
+         {car:1, appear:2000,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {car:3, appear:2350, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
 
-         [{car:2, appear:100,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-          {car:3, appear:400,  x:canvas.width, y:y_pista+110, bandera_rebaso:0},
-          {car:1, appear:700,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-          {car:3, appear:1000, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
+         [{car:2, appear:2675,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+          {car:3, appear:3000,  x:canvas.width, y:y_pista+110, bandera_rebaso:0},
+          {car:1, appear:3450,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+          {car:3, appear:3800, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
 
-    ],
-    [   //tercer nivel (2)
-        [{e:2},{e:3},{e:0},{e:1},{e:1},{e:3},{e:2},{e:0},{e:2}], 
-        [{e:3},{e:1},{e:2},{e:0},{e:3},{e:0},{e:1},{e:2},{e:3}],
-        [{e:2},{e:0},{e:1},{e:1},{e:2},{e:2},{e:0},{e:3},{e:3}],
-        [{e:3},{e:0},{e:0},{e:3},{e:2},{e:2},{e:0},{e:2},{e:3}],
     ]
+    
     ]
     
 var nivel = 0;
@@ -117,7 +112,7 @@ img_meta.onload = function (){
 }
 
 img_start.onload = function (){ //carga la imagen y despues ejecuta la funcion 
-        cuadro_inicial();
+    cuadro_inicial();
 }
 document.addEventListener("keydown",detectarTecla);
 canvas.addEventListener("click", detectarClick);
@@ -154,18 +149,55 @@ function cuadro_inicial(){
 
 }
 
+function cuadro_cambio_nivel(){
+    nivel+=1;
+    x=0;
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    ctx.fillStyle = "#FF69B4";
+    ctx.fillRect(canvas.width/2-200,canvas.height/2-100,400,200);
+    
+    ctx.fillStyle = "#FF97D9";
+    ctx.fillRect(canvas.width/2-210,canvas.height/2-106,400,200);
+
+    ctx.font="50px Times new roman"
+    ctx.fillStyle="#BF398C"
+    ctx.fillText("NIVEL: "+(nivel+1),canvas.width/2-100,150);
+    ctx.fillText("________",canvas.width/2-100,150);
+
+    //Dibujamos el boton
+    ctx.fillStyle = "#FF69B4";
+    ctx.fillRect(inicio_x_boton,inicio_y_boton,200,50);
+
+    // Configura el estilo del texto
+    ctx.font = "20px Times New Roman";
+    ctx.fillStyle = "white";
+
+    // Centra el texto en el botón
+    var buttonText = "START";
+    var textWidth = ctx.measureText(buttonText).width;
+    var xText = (canvas.width / 2) - (textWidth / 2);
+    var yText = (canvas.height / 2 + 20) + 10;
+
+    // Dibuja el texto en el botón
+    ctx.fillText(buttonText, xText, yText);
+
+}
+
 function detectarClick(event){
-    console.log("click");
+    //console.log("click");
     var rect = canvas.getBoundingClientRect();
     var x_click = event.clientX - rect.left;
     var y_click = event.clientY - rect.top;
 
-    console.log("x: " + x_click + " y: " + y_click);
-    console.log("inicio_x_boton: " + inicio_x_boton + " inicio_y_boton: " + inicio_y_boton);
-    console.log("ancho_boton: " + ancho_boton + " alto_boton: " + alto_boton);
+   // console.log("x: " + x_click + " y: " + y_click);
+   // console.log("inicio_x_boton: " + inicio_x_boton + " inicio_y_boton: " + inicio_y_boton);
+   // console.log("ancho_boton: " + ancho_boton + " alto_boton: " + alto_boton);
 
     // Verifica si el clic está dentro del botón, INICIA EL JUEGOOOOOO
     if (x_click >= inicio_x_boton &&  x_click <= inicio_x_boton+ancho_boton && y_click >= inicio_y_boton  && y_click <= inicio_y_boton+alto_boton ) {
+            contador = 0;
             IntervaloJuego = setInterval(draw,intervalo_carrito);
         //setInterval(dibujar_carrito_enemigo,intervalo_carrito_enemigo);
     }
@@ -193,7 +225,7 @@ function detectarTecla(e){
     }
 
     if (e.keyCode == 32){
-       cuadro_inicial();
+       cuadro_cambio_nivel();
        canvas.addEventListener("click", detectarClick);
     }
 
@@ -220,10 +252,16 @@ function draw(){
     ctx.fillStyle="black"
     ctx.fillText("Score:"+puntaje,canvas.width-200,20);
 
-    x += dx;
+    ctx.fillText("Nivel:"+(nivel+1),canvas.width-300,20);
+
+    x -= dx;
     dibujar_carritos_enemigos();
-    if (x > canvas.width-margen_desaparicion_carrito || x < 0)
-    dx = -dx;
+    //if (x > canvas.width-margen_desaparicion_carrito || x < 0)
+    //dx = -dx;
+
+    if (x < 0)
+        x = 0;
+
 
     if (y < y_pista || y>y_pista+ancho_pista){ 
         dy = -dy;
@@ -252,6 +290,7 @@ function draw_escenario(){
      ctx.fillRect(0,0,canvas.width,canvas.height);
      dibujar_pista();
 }
+
 
 function dibujar_carrito(){
     ctx.drawImage(img, x, y, car_ancho, car_altura);
@@ -289,14 +328,16 @@ function detectar_colision_carrito_enemigo(){
         {
             var c = L[nivel][j][i];
             if (c.x + car_ancho_enemigo > 0){ //Se encuentra en pantalla
-                if(x < c.x + car_ancho && x + car_ancho > c.x &&
-                    y < c.y + car_altura && y + car_altura > c.y){
+                //console.log(x);
+                //console.log(c.x);
+                if(x < c.x + car_ancho-20 && x + car_ancho-20 > c.x &&
+                    y < c.y + car_altura-10 && y + car_altura-10 > c.y){
 
                          // Determina la dirección de la colisión
-                            if (y < c.y+car_altura && x < c.x+car_ancho) {
+                            if (y < c.y+car_altura-10 && x < c.x+car_ancho-20) {
                                 direccionColision = "abajo";
                             }
-                            if (y+car_altura > c.y && x+car_ancho < c.x) {
+                            if (y+car_altura-10 > c.y && x+car_ancho-20 < c.x) {
                                 direccionColision = "arriba";
                             }
                        
@@ -319,6 +360,9 @@ function detectar_colision_carrito_enemigo(){
                                 y = c.y + car_altura;
                             } 
                             x = c.x - car_ancho;
+                            if(puntaje > 0){
+                                puntaje -= 5;
+                            }
                         } 
                            
                 }
@@ -339,7 +383,7 @@ function detectar_rebaso(){
             if (x > c.x +car_ancho && c.bandera_rebaso == 0){ //Se encuentra en una posicion adelante del carro enemigo
                 puntaje  += c.car * 10;
                 c.bandera_rebaso = 1;
-                console.log("puntaje: " + puntaje);
+                //console.log("puntaje: " + puntaje);
             }
 
         }
@@ -349,6 +393,7 @@ function detectar_rebaso(){
     
 
     if (total == 1){  //Se hace el cambio de nivel
+        console.log("Cambio de nivel");
          dibujar_meta();
      }          
 
@@ -364,9 +409,9 @@ function dibujar_meta(){
                 ctx.fillText("Felicidades, \n pasaste el nivel: "+(nivel+1),canvas.width/2-100,150);
 
                 clearInterval(IntervaloJuego);
-                nivel+=1;
+
                 intervalo_carrito -= 2;
-                contador = 0;
+                intervalo_carrito_enemigo -= 2;
                 document.addEventListener("keydown",detectarTecla);
             }
 
