@@ -11,6 +11,11 @@ img.src = "assets/yellow_car.png";
 var img_start = new Image();
 img_start.src = "assets/frente_yellow_car.png";
 
+var img_optimizado = new Image();
+img_optimizado.src = "assets/red_car.png";
+
+var img_respaldo = new Image();
+img_respaldo = img;
 var img_car_enemigo = new Image();
 img_car_enemigo.src = "assets/purple_car.png";
 var img_car_enemigo2 = new Image();
@@ -49,6 +54,8 @@ car_ancho = 150;
 car_altura = 100;
 margen_desaparicion_carrito = 140;
 intervalo_carrito = 30;
+contador_carrito_optimizado = 0;
+limite_contador_carrito_optimizado = 30;
 
 var contador = 0;
 var puntaje = 0;
@@ -87,7 +94,7 @@ alto_boton = 50;
 let L = [
     [   //primer nivel (0)
         [{objetos:1, appear:100,  x:canvas.width, y:y_pista+10   , bandera_rebaso:0},
-         {objetos:3, appear:400,  x:canvas.width, y:y_pista+110  , bandera_rebaso:0},
+         {objetos:4, appear:400,  x:canvas.width, y:y_pista+110+30  , bandera_rebaso:0},
          {objetos:2, appear:700,  x:canvas.width, y:y_pista+10   , bandera_rebaso:0},
          {objetos:3, appear:1000, x:canvas.width, y:y_pista+110  , bandera_rebaso:0}],
     ],
@@ -146,6 +153,8 @@ contador_carritos = 0;
 
 
 img.onload = function (){ 
+}
+img_optimizado.onload = function(){
 }
 img_car_enemigo.onload = function (){ 
 }
@@ -325,6 +334,7 @@ function draw(){
 
 }
 
+
 function draw_escenario(){
      //Rosa y morado #EE97E5
      ctx.fillStyle = "#FF97D9";
@@ -374,15 +384,26 @@ function detectar_colision_objeto(){
     for (j = 0; j < L[nivel].length; j++ ){
         for (i = 0; i < L[nivel][j].length; i++)
         {
+            //contador_carrito_optimizado+=1; //  Sumamos el conta
+            //if (contador_carrito_optimizado == limite_contador_carrito_optimizado){
+            //    img = img_respaldo;
+            //    car_ancho = 150;
+            //    car_altura = 100;
+            //}
+
             var c = L[nivel][j][i];
             if (c.objetos == -2) //Omite las acciones cuando se trata de una moneda ya tomada
                 return;
             
+            
             if (c.x + (pelotaRadio*2) > 0 && c.objetos == 4){ //Evaluamos que la moneda este en pantalla
                 if( x <= c.x+(pelotaRadio*2) && x+car_ancho > c.x && y < c.y+(pelotaRadio*2) && y+car_altura>c.y){
                     console.log("colisiono la moneda");
-                    puntaje*=2;
+                    puntaje*=3; //Triplica puntaje
                     c.objetos = -2;
+                    img = img_optimizado;
+                    car_ancho = car_ancho_enemigo;
+                    car_altura = car_altura_enemigo;
                 }
             }
 
