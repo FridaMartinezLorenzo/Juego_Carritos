@@ -86,30 +86,56 @@ alto_boton = 50;
 //El carrito o premio que se va a dibujar, en que punto se va a dibujar (con respecto al contador) y su ubicacion x, y
 let L = [
     [   //primer nivel (0)
-        [{objetos:1, appear:100,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-         {objetos:4, appear:400,  x:canvas.width, y:y_pista+110+30, bandera_rebaso:0},
-         {objetos:2, appear:700,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-         {objetos:3, appear:1000, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
+        [{objetos:1, appear:100,  x:canvas.width, y:y_pista+10   , bandera_rebaso:0},
+         {objetos:3, appear:400,  x:canvas.width, y:y_pista+110  , bandera_rebaso:0},
+         {objetos:2, appear:700,  x:canvas.width, y:y_pista+10   , bandera_rebaso:0},
+         {objetos:3, appear:1000, x:canvas.width, y:y_pista+110  , bandera_rebaso:0}],
     ],
     [   //segundo nivel (1)
-        [{objetos:2, appear: 50,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-         {objetos:3, appear:350,  x:canvas.width, y:y_pista+110, bandera_rebaso:0},
-         {objetos:1, appear:750,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-         {objetos:3, appear:950, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
+        [{objetos:2, appear: 50,  x:canvas.width, y:y_pista+10   , bandera_rebaso:0},
+         {objetos:3, appear:350,  x:canvas.width, y:y_pista+110  , bandera_rebaso:0},
+         {objetos:1, appear:750,  x:canvas.width, y:y_pista+10   , bandera_rebaso:0},
+         {objetos:3, appear:950,  x:canvas.width, y:y_pista+110  , bandera_rebaso:0}],
 
         [{objetos:1, appear:1250,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
-         {objetos:1, appear:1775,  x:canvas.width, y:y_pista+110, bandera_rebaso:0},
-         {objetos:1, appear:2000,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-         {objetos:3, appear:2350, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
+         {objetos:1, appear:1775,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:1, appear:2000,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:3, appear:2350,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+    ],
+    [   //tercer nivel (3)
+        [{objetos:3, appear: 50,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:2, appear:250,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:2, appear:350,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:1, appear:550,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0}],
 
-         [{objetos:2, appear:2675,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-          {objetos:3, appear:3000,  x:canvas.width, y:y_pista+110, bandera_rebaso:0},
-          {objetos:1, appear:3450,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-          {objetos:3, appear:3800, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
+        [{objetos:2, appear:750,   x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:2, appear:950,   x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:3, appear:1200,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:1, appear:1400,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
 
-    ]
+        [{objetos:2, appear:1650,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:2, appear:1800,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:3, appear:2000,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:4, appear:2100,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+        ],
+    [   //cuarto nivel (2)
+        [{objetos:2, appear: 50,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:2, appear:250,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:3, appear:750,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:1, appear:950,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0}],
+
+        [{objetos:3, appear:1250,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:2, appear:1575,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:1, appear:1800,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:3, appear:2000,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+
+        [{objetos:2, appear:1250,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {objetos:1, appear:1575,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:1, appear:1800,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:3, appear:2000,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+    ],
     
-    ]
+]
     
 var nivel = 0;
 
@@ -209,10 +235,6 @@ function detectarClick(event){
     var rect = canvas.getBoundingClientRect();
     var x_click = event.clientX - rect.left;
     var y_click = event.clientY - rect.top;
-
-   // console.log("x: " + x_click + " y: " + y_click);
-   // console.log("inicio_x_boton: " + inicio_x_boton + " inicio_y_boton: " + inicio_y_boton);
-   // console.log("ancho_boton: " + ancho_boton + " alto_boton: " + alto_boton);
 
     // Verifica si el clic está dentro del botón, INICIA EL JUEGOOOOOO
     if (x_click >= inicio_x_boton &&  x_click <= inicio_x_boton+ancho_boton && y_click >= inicio_y_boton  && y_click <= inicio_y_boton+alto_boton ) {
@@ -365,14 +387,14 @@ function detectar_colision_objeto(){
             }
 
             if (c.x + car_ancho_enemigo > 0 && c.objetos != 4 && c.objetos != -2){ //Se encuentra en pantalla
-                if(x < c.x + car_ancho_enemigo-20 && x + car_ancho-20 > c.x &&
+                if(x < c.x + car_ancho_enemigo && x + car_ancho > c.x &&
                     y < c.y + car_altura_enemigo-10 && y + car_altura-10 > c.y){
 
                          // Determina la dirección de la colisión
-                            if (y < c.y+car_altura_enemigo-10 && x < c.x+car_ancho_enemigo-20) {
+                            if (y < c.y+car_altura_enemigo-10 && x < c.x+car_ancho_enemigo) {
                                 direccionColision = "abajo";
                             }
-                            if (y+car_altura-10 > c.y && x+car_ancho-20 < c.x) {
+                            if (y+car_altura-10 > c.y && x+car_ancho < c.x) {
                                 direccionColision = "arriba";
                             }
                        
