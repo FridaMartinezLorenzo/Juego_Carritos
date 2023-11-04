@@ -20,6 +20,22 @@ img_car_enemigo3.src = "assets/blue_car.png";
 var img_meta = new Image();
 img_meta.src = "assets/meta.jpg";
 
+//Añadimos las variables de la moneda que será el multiplicador del score
+var img_moneda = new Image();
+img_moneda.src = "assets/estrellas.png";
+var pelotaRadio = 20;
+var indice = 0;
+let M = 
+    [
+        [5,5,40,38,40,38], 
+        [44,5,40,38,40,38],
+        [80,5,33,38,33,38],
+        [5,50,40,38,33,38],
+        [34,50,40,38,40,38],
+        [73,50,40,38,40,38],
+    ]
+
+
 var x = 0; //Aqui es donde va a empezar
 var y = y_pista+110;
 
@@ -41,7 +57,9 @@ var puntaje = 0;
 var dx_carrito_enemigo = 2;
 var car_ancho_enemigo = 120;
 var car_altura_enemigo = 80;
-var cars = [img_car_enemigo,img_car_enemigo2,img_car_enemigo3];
+
+//Arreglo de las imagenes que saldrán en el juego
+var objetos = [img_car_enemigo,img_car_enemigo2,img_car_enemigo3,img_moneda];
 
 //A lo mas saldrán tres carritos enemigos al mismo tiempo
 //Coordenadas iniciales del carrito enemigo
@@ -62,31 +80,32 @@ ancho_boton = 200;
 alto_boton = 50;
 
 
+
 //Creamos una matriz donde almacenaremos la información de los niveles
 //Cada nivel es una matriz, cada elemento de la matriz es un objeto que contiene:
 //El carrito o premio que se va a dibujar, en que punto se va a dibujar (con respecto al contador) y su ubicacion x, y
 let L = [
     [   //primer nivel (0)
-        [{car:1, appear:100,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-         {car:2, appear:400,  x:canvas.width, y:y_pista+110, bandera_rebaso:0},
-         {car:2, appear:700,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-         {car:3, appear:1000, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
+        [{objetos:1, appear:100,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {objetos:4, appear:400,  x:canvas.width, y:y_pista+110+30, bandera_rebaso:0},
+         {objetos:2, appear:700,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {objetos:3, appear:1000, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
     ],
     [   //segundo nivel (1)
-       [{car:2, appear: 50,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-        {car:3, appear:350,  x:canvas.width, y:y_pista+110, bandera_rebaso:0},
-        {car:1, appear:750,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-        {car:3, appear:950, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
+        [{objetos:2, appear: 50,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {objetos:3, appear:350,  x:canvas.width, y:y_pista+110, bandera_rebaso:0},
+         {objetos:1, appear:750,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {objetos:3, appear:950, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
 
-        [{car:1, appear:1250,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
-         {car:1, appear:1775,  x:canvas.width, y:y_pista+110, bandera_rebaso:0},
-         {car:1, appear:2000,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-         {car:3, appear:2350, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
+        [{objetos:1, appear:1250,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:1, appear:1775,  x:canvas.width, y:y_pista+110, bandera_rebaso:0},
+         {objetos:1, appear:2000,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {objetos:3, appear:2350, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
 
-         [{car:2, appear:2675,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-          {car:3, appear:3000,  x:canvas.width, y:y_pista+110, bandera_rebaso:0},
-          {car:1, appear:3450,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-          {car:3, appear:3800, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
+         [{objetos:2, appear:2675,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+          {objetos:3, appear:3000,  x:canvas.width, y:y_pista+110, bandera_rebaso:0},
+          {objetos:1, appear:3450,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+          {objetos:3, appear:3800, x:canvas.width, y:y_pista+110, bandera_rebaso:0}],
 
     ]
     
@@ -199,7 +218,7 @@ function detectarClick(event){
     if (x_click >= inicio_x_boton &&  x_click <= inicio_x_boton+ancho_boton && y_click >= inicio_y_boton  && y_click <= inicio_y_boton+alto_boton ) {
             contador = 0;
             IntervaloJuego = setInterval(draw,intervalo_carrito);
-        //setInterval(dibujar_carrito_enemigo,intervalo_carrito_enemigo);
+        //setInterval(dibujar_objetos,intervalo_carrito_enemigo);
     }
 }
 
@@ -245,7 +264,7 @@ function draw(){
     draw_escenario();
     dibujar_carrito();
     detectar_rebaso();
-    detectar_colision_carrito_enemigo();
+    detectar_colision_objeto();
 
 
     ctx.font="24px Arial"
@@ -301,11 +320,11 @@ function dibujar_carritos_enemigos(){
         for (i = 0; i < L[nivel][j].length; i++)
         {
             c = L[nivel][j][i];
-            if(c.car != 0){
+            if(c.objetos != 0){
                 //Evluamos si es el momento en el que debe de aparecer el carrito
                 //console.log("contador: " + contador + " appear: " + c.appear);
                 if (contador >= c.appear){
-                    dibujar_carrito_enemigo(j,i);
+                    dibujar_objetos(j,i);
                 }
             }
         }
@@ -313,28 +332,44 @@ function dibujar_carritos_enemigos(){
 
 }
 
-function dibujar_carrito_enemigo(j,i){
-    enemigo = L[nivel][j][i];
+function dibujar_objetos(j,i){
+    obj = L[nivel][j][i];
 
-    ctx.drawImage(cars[enemigo.car - 1], enemigo.x, enemigo.y, car_ancho_enemigo, car_altura_enemigo);
-    // Actualiza la posición del carrito enemigo
-    enemigo.x -= dx_carrito_enemigo;
+    if (obj.objetos == -2) //Se tomó el -2 porque el -1 nos ayuda en el proceso de verificacion de que se han superado los carrito
+        return;
+    if(obj.objetos == 4){ //La moneda aún no ha sido tomada por el jugador
+        dibujaMoneda(obj);
+    }else{
+        ctx.drawImage(objetos[obj.objetos - 1], obj.x, obj.y, car_ancho_enemigo, car_altura_enemigo);
+    }
+
+    // Actualiza la posición del objeto
+    obj.x -= dx_carrito_enemigo;
 }
 
-function detectar_colision_carrito_enemigo(){
+function detectar_colision_objeto(){
     var direccionColision = "";
     for (j = 0; j < L[nivel].length; j++ ){
         for (i = 0; i < L[nivel][j].length; i++)
         {
             var c = L[nivel][j][i];
-            if (c.x + car_ancho_enemigo > 0){ //Se encuentra en pantalla
-                //console.log(x);
-                //console.log(c.x);
-                if(x < c.x + car_ancho-20 && x + car_ancho-20 > c.x &&
-                    y < c.y + car_altura-10 && y + car_altura-10 > c.y){
+            if (c.objetos == -2) //Omite las acciones cuando se trata de una moneda ya tomada
+                return;
+            
+            if (c.x + (pelotaRadio*2) > 0 && c.objetos == 4){ //Evaluamos que la moneda este en pantalla
+                if( x <= c.x+(pelotaRadio*2) && x+car_ancho > c.x && y < c.y+(pelotaRadio*2) && y+car_altura>c.y){
+                    console.log("colisiono la moneda");
+                    puntaje*=2;
+                    c.objetos = -2;
+                }
+            }
+
+            if (c.x + car_ancho_enemigo > 0 && c.objetos != 4 && c.objetos != -2){ //Se encuentra en pantalla
+                if(x < c.x + car_ancho_enemigo-20 && x + car_ancho-20 > c.x &&
+                    y < c.y + car_altura_enemigo-10 && y + car_altura-10 > c.y){
 
                          // Determina la dirección de la colisión
-                            if (y < c.y+car_altura-10 && x < c.x+car_ancho-20) {
+                            if (y < c.y+car_altura_enemigo-10 && x < c.x+car_ancho_enemigo-20) {
                                 direccionColision = "abajo";
                             }
                             if (y+car_altura-10 > c.y && x+car_ancho-20 < c.x) {
@@ -373,18 +408,20 @@ function detectar_colision_carrito_enemigo(){
 
 }
 
+
 function detectar_rebaso(){
     var total = 1;
     for (j = 0; j < L[nivel].length; j++ ){
         for (i = 0; i < L[nivel][j].length; i++)
         {
             var c = L[nivel][j][i];
-            total *=c.bandera_rebaso;
-            if (x > c.x +car_ancho && c.bandera_rebaso == 0){ //Se encuentra en una posicion adelante del carro enemigo
-                puntaje  += c.car * 10;
-                c.bandera_rebaso = 1;
-                //console.log("puntaje: " + puntaje);
-            }
+            if (c.objetos != 4 && c.objetos != -2) //Permite que no se cuenten las monedas
+                total *=c.bandera_rebaso;
+                if (x > c.x +car_ancho && c.bandera_rebaso == 0){ //Se encuentra en una posicion adelante del carro enemigo
+                    puntaje  += c.objetos * 10;
+                    c.bandera_rebaso = 1;
+                    //console.log("puntaje: " + puntaje);
+                }
 
         }
     }
@@ -400,8 +437,8 @@ function detectar_rebaso(){
 }
 
 function dibujar_meta(){
-            if (x > canvas.width-300){
-                ctx.drawImage(img_meta,canvas.width-200, y_pista,100,210);
+    ctx.drawImage(img_meta,canvas.width-200, y_pista,100,210);
+    if (x > canvas.width-300){
                 dibujar_carrito();
 
                 ctx.font="30px Times new roman"
@@ -434,4 +471,9 @@ function dibujar_divisiones(){
     }
 }
 
+function dibujaMoneda(c){
+    //dibuja la estrella con efecto
+    ctx.drawImage(img_moneda,M[indice][0],M[indice][1],M[indice][2],M[indice][3],c.x,c.y, M[indice][4]/2,M[indice][5]/2);
+    indice = (indice+1) % 6;
 
+}
