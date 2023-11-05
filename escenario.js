@@ -15,7 +15,7 @@ var img_optimizado = new Image();
 img_optimizado.src = "assets/red_car.png";
 
 var img_respaldo = new Image();
-img_respaldo = img;
+img_respaldo.src = "assets/yellow_car.png";
 var img_car_enemigo = new Image();
 img_car_enemigo.src = "assets/purple_car.png";
 var img_car_enemigo2 = new Image();
@@ -49,13 +49,22 @@ var dy = 2;
 
 var pasos = 10;
 
+//Variables para el tiempo
+var tiempo1 = 0;
+var tiempo2 = 0;
+var tiempo_resultante = 0;
+var tiempo_esperado= 50; //Segundos
+
 //Variables para el carrito
 car_ancho = 150;
 car_altura = 100;
 margen_desaparicion_carrito = 140;
 intervalo_carrito = 30;
 contador_carrito_optimizado = 0;
-limite_contador_carrito_optimizado = 30;
+limite_contador_carrito_optimizado = 1600;
+
+var bandera_cambio_color = 0; //La bandera nos ayudará a determinar cuando apagar/encender el cambio de color
+var bandera_fallo_nivel = 0;
 
 var contador = 0;
 var puntaje = 0;
@@ -109,7 +118,7 @@ let L = [
          {objetos:1, appear:2000,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
          {objetos:3, appear:2350,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
     ],
-    [   //tercer nivel (3)
+    [   //tercer nivel (2)
         [{objetos:3, appear: 50,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
          {objetos:2, appear:250,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
          {objetos:2, appear:350,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
@@ -120,41 +129,177 @@ let L = [
          {objetos:3, appear:1200,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
          {objetos:1, appear:1400,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
 
-        [{objetos:2, appear:1650,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+        [{objetos:2, appear:1650,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
          {objetos:2, appear:1800,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
          {objetos:3, appear:2000,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
-         {objetos:4, appear:2100,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+         {objetos:1, appear:2200,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
         ],
-    [   //cuarto nivel (2)
+    [   //cuarto nivel (3)
         [{objetos:2, appear: 50,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
          {objetos:2, appear:250,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
-         {objetos:3, appear:750,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:3, appear:550,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
          {objetos:1, appear:950,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0}],
 
         [{objetos:3, appear:1250,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
-         {objetos:2, appear:1575,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:2, appear:1605,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
          {objetos:1, appear:1800,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
          {objetos:3, appear:2000,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
 
-        [{objetos:2, appear:1250,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-         {objetos:1, appear:1575,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
-         {objetos:1, appear:1800,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
-         {objetos:3, appear:2000,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+        [{objetos:2, appear:2200,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {objetos:1, appear:2400,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:1, appear:2600,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:3, appear:2900,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0}],
     ],
+    [   //quinto nivel (4)
+        [{objetos:2, appear: 50,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:2, appear:250,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:4, appear:350,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
+         {objetos:1, appear:550,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0}],
+
+        [{objetos:3, appear:850,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:4, appear:1000,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
+         {objetos:1, appear:1150,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:3, appear:1300,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+
+        [{objetos:2, appear:1500,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {objetos:4, appear:1700,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
+         {objetos:1, appear:1900,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:3, appear:2100,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+    ],
+    [   //sexto nivel (5)
+        [{objetos:2, appear: 50,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:2, appear:250,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:4, appear:350,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
+         {objetos:1, appear:550,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0}],
+
+        [{objetos:3, appear:850,   x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:2, appear:1000,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:1, appear:1150,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:3, appear:1300,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+
+        [{objetos:2, appear:1500,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {objetos:4, appear:1700,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
+         {objetos:1, appear:1900,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:3, appear:2100,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+    ],
+    [   //septimo nivel (6)
+        [{objetos:1, appear: 50,  x:canvas.width, y:y_pista+210  , bandera_rebaso:0},
+         {objetos:3, appear:250,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:4, appear:450,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
+         {objetos:2, appear:450,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0}],
+
+        [{objetos:2, appear:450,   x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
+         {objetos:3, appear:800,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:1, appear:900,  x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
+         {objetos:2, appear:950,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0}],
+
+        [{objetos:1, appear:1200,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {objetos:4, appear:1200,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
+         {objetos:3, appear:1500,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:2, appear:1700,  x:canvas.width, y:y_pista+310 , bandera_rebaso:0}],
+
+        [{objetos:2, appear:1700,  x:canvas.width, y:y_pista+310 , bandera_rebaso:0},
+         {objetos:3, appear:1700,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {objetos:4, appear:1900,  x:canvas.width, y:y_pista+310+30 , bandera_rebaso:0},
+         {objetos:3, appear:1900,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+
+        [{objetos:2, appear:1900,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0},
+         {objetos:4, appear:2100,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
+         {objetos:3, appear:2100,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:3, appear:2100,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+    ],
+    [   //octavo nivel (7)
+        [{objetos:2, appear: 50,  x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
+         {objetos:1, appear:250,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0},
+         {objetos:4, appear:450,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
+         {objetos:3, appear:450,  x:canvas.width, y:y_pista+210  , bandera_rebaso:0}],
+
+        [{objetos:1, appear:450,   x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
+         {objetos:3, appear:800,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {objetos:3, appear:900,  x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
+         {objetos:3, appear:950,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0}],
+
+        [{objetos:3, appear:1200,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0},
+         {objetos:4, appear:1200,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
+         {objetos:1, appear:1500,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:2, appear:1700,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0}],
+
+        [{objetos:2, appear:1700,  x:canvas.width, y:y_pista+310 , bandera_rebaso:0},
+         {objetos:3, appear:1700,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {objetos:4, appear:1900,  x:canvas.width, y:y_pista+310+30 , bandera_rebaso:0},
+         {objetos:3, appear:1900,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+
+        [{objetos:3, appear:1900,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {objetos:4, appear:2100,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
+         {objetos:2, appear:2100,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:1, appear:2100,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+    ],
+    [   //noveno nivel (7)
+        [{objetos:2, appear: 50,  x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
+         {objetos:1, appear:250,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0},
+         {objetos:4, appear:450,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
+         {objetos:3, appear:450,  x:canvas.width, y:y_pista+210  , bandera_rebaso:0}],
+        
+        [{objetos:1, appear:450,   x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
+         {objetos:3, appear:800,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {objetos:3, appear:900,  x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
+         {objetos:3, appear:950,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0}],
+        
+        [{objetos:3, appear:1200,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0},
+         {objetos:4, appear:1200,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
+         {objetos:1, appear:1500,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:2, appear:1700,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0}],
+        
+        [{objetos:2, appear:1700,  x:canvas.width, y:y_pista+310 , bandera_rebaso:0},
+         {objetos:3, appear:1700,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {objetos:4, appear:1900,  x:canvas.width, y:y_pista+310+30 , bandera_rebaso:0},
+         {objetos:3, appear:1900,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+        
+        [{objetos:3, appear:1900,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {objetos:4, appear:2100,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
+         {objetos:2, appear:2100,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:1, appear:2100,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+    ],
+    [   //decimo nivel (7)
+        [{objetos:2, appear: 50,  x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
+         {objetos:1, appear:250,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0},
+         {objetos:4, appear:450,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
+         {objetos:3, appear:450,  x:canvas.width, y:y_pista+210  , bandera_rebaso:0}],
+
+        [{objetos:1, appear:450,   x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
+         {objetos:3, appear:800,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {objetos:3, appear:900,  x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
+         {objetos:3, appear:950,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0}],
+
+        [{objetos:3, appear:1200,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0},
+         {objetos:4, appear:1200,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
+         {objetos:1, appear:1500,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:2, appear:1700,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0}],
+
+        [{objetos:2, appear:1700,  x:canvas.width, y:y_pista+310 , bandera_rebaso:0},
+         {objetos:3, appear:1700,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {objetos:4, appear:1900,  x:canvas.width, y:y_pista+310+30 , bandera_rebaso:0},
+         {objetos:3, appear:1900,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+
+        [{objetos:3, appear:1900,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+         {objetos:4, appear:2100,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
+         {objetos:2, appear:2100,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:1, appear:2100,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+    ]
     
 ]
     
-var nivel = 0;
+var nivel = 8;
 
 //Variable para la aparicion de los carritos
 contador  = 0;
-contador_carritos = 0;
-
 
 
 img.onload = function (){ 
 }
 img_optimizado.onload = function(){
+}
+img_respaldo.onload = function(){
 }
 img_car_enemigo.onload = function (){ 
 }
@@ -204,7 +349,6 @@ function cuadro_inicial(){
 }
 
 function cuadro_cambio_nivel(){
-    nivel+=1;
     x=0;
     ctx.fillStyle = "#FFFFFF";
     ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -275,14 +419,31 @@ function detectarTecla(e){
     }
 
     if (e.keyCode == 32){
+       if (bandera_fallo_nivel == 1){
+           nivel-=1;
+           intervalo_carrito += 2;
+           limite_contador_carrito_optimizado -=200;
+       }
+       else{
+           nivel+=1;
+           intervalo_carrito -= 2;
+           limite_contador_carrito_optimizado +=200;
+       }
        cuadro_cambio_nivel();
        canvas.addEventListener("click", detectarClick);
     }
 
     if (y <= y_pista)
         y = y_pista;
-    if (y >= ancho_pista)
-        y = ancho_pista;
+
+    if (nivel  >=6 ){
+        if (y >= ancho_pista-100)
+            y = ancho_pista-100;
+    }else{
+        if (y >= ancho_pista)
+            y = ancho_pista;
+    }
+
 
     if (x <= 0)
         x = 0;
@@ -300,40 +461,25 @@ function draw(){
 
     ctx.font="24px Arial"
     ctx.fillStyle="black"
-    ctx.fillText("Score:"+puntaje,canvas.width-200,20);
+    ctx.fillText("Nivel:"+(nivel+1)+"     Score:"+puntaje,canvas.width-400,20);
 
-    ctx.fillText("Nivel:"+(nivel+1),canvas.width-300,20);
+    //ctx.fillText("Nivel:"+(nivel+1),canvas.width-300,20);
 
-    x -= dx;
+    x -= dx; //Siempre hacia atrás para que se simule el movimiento de que la pista se mueve
     dibujar_carritos_enemigos();
-    //if (x > canvas.width-margen_desaparicion_carrito || x < 0)
-    //dx = -dx;
 
     if (x < 0)
         x = 0;
 
-
-    if (y < y_pista || y>y_pista+ancho_pista){ 
+    if (y < y_pista || y>y_pista+ancho_pista){ //Evaluamos que no se salga de Y
         dy = -dy;
     }
-    contador += 1;
+    contador += 1; //Contador de apariciones (Nos ayuda a saber en que numero de repeticion se mostrará el carrito)
 
-    if (contador ==1){
-        contador_carritos = 0;
-
-        //Contamos el numero de carritos que apareceran en el nivel
-        for (j = 0; j < L[nivel].length; j++ ){
-            for (i = 0; i < L[nivel][j].length; i++)
-            {
-               contador_carritos += 1;
-            }
-        }
-        //console.log("contador_carritos: " + contador_carritos);
-
+    if ( (nivel == 8 | nivel == 9) && contador == 1){
+        tiempo1 = Date.now();
     }
-
 }
-
 
 function draw_escenario(){
      //Rosa y morado #EE97E5
@@ -341,7 +487,6 @@ function draw_escenario(){
      ctx.fillRect(0,0,canvas.width,canvas.height);
      dibujar_pista();
 }
-
 
 function dibujar_carrito(){
     ctx.drawImage(img, x, y, car_ancho, car_altura);
@@ -354,7 +499,6 @@ function dibujar_carritos_enemigos(){
             c = L[nivel][j][i];
             if(c.objetos != 0){
                 //Evluamos si es el momento en el que debe de aparecer el carrito
-                //console.log("contador: " + contador + " appear: " + c.appear);
                 if (contador >= c.appear){
                     dibujar_objetos(j,i);
                 }
@@ -367,16 +511,28 @@ function dibujar_carritos_enemigos(){
 function dibujar_objetos(j,i){
     obj = L[nivel][j][i];
 
-    if (obj.objetos == -2) //Se tomó el -2 porque el -1 nos ayuda en el proceso de verificacion de que se han superado los carrito
-        return;
-    if(obj.objetos == 4){ //La moneda aún no ha sido tomada por el jugador
-        dibujaMoneda(obj);
-    }else{
-        ctx.drawImage(objetos[obj.objetos - 1], obj.x, obj.y, car_ancho_enemigo, car_altura_enemigo);
+    if (bandera_cambio_color == 1){//Contador de la duración el cambio de color
+        contador_carrito_optimizado+=1; //  Sumamos el conta
+    } 
+    
+    //Cuando volver al carrito normal del juego (el amarilllo)
+    if (contador_carrito_optimizado == limite_contador_carrito_optimizado){
+        console.log("Detecto el limite");
+        img = img_respaldo;
+        car_ancho = 150;
+        car_altura = 100;
+        bandera_cambio_color = 0;
+        contador_carrito_optimizado = 0;
     }
 
-    // Actualiza la posición del objeto
-    obj.x -= dx_carrito_enemigo;
+    if (obj.objetos == -2) //Se tomó el -2 porque el -1 nos ayuda en el proceso de verificacion de que se han superado los carrito
+        return;
+    if(obj.objetos == 4) //La moneda aún no ha sido tomada por el jugador
+        dibujaMoneda(obj);
+    else
+        ctx.drawImage(objetos[obj.objetos - 1], obj.x, obj.y, car_ancho_enemigo, car_altura_enemigo);
+
+    obj.x -= dx_carrito_enemigo;// Actualiza la posición del objeto
 }
 
 function detectar_colision_objeto(){
@@ -384,26 +540,20 @@ function detectar_colision_objeto(){
     for (j = 0; j < L[nivel].length; j++ ){
         for (i = 0; i < L[nivel][j].length; i++)
         {
-            //contador_carrito_optimizado+=1; //  Sumamos el conta
-            //if (contador_carrito_optimizado == limite_contador_carrito_optimizado){
-            //    img = img_respaldo;
-            //    car_ancho = 150;
-            //    car_altura = 100;
-            //}
-
             var c = L[nivel][j][i];
-            if (c.objetos == -2) //Omite las acciones cuando se trata de una moneda ya tomada
-                return;
             
             
-            if (c.x + (pelotaRadio*2) > 0 && c.objetos == 4){ //Evaluamos que la moneda este en pantalla
-                if( x <= c.x+(pelotaRadio*2) && x+car_ancho > c.x && y < c.y+(pelotaRadio*2) && y+car_altura>c.y){
+            if (c.x + (pelotaRadio*2) > 0 && c.x < canvas.width && c.objetos == 4){ //Evaluamos que la moneda este en pantalla
+                
+                //console.log(L[nivel]);
+                if( x < c.x+(pelotaRadio*2) && x+car_ancho > c.x && y < c.y+(pelotaRadio*2) && y+car_altura>c.y){
                     console.log("colisiono la moneda");
                     puntaje*=3; //Triplica puntaje
                     c.objetos = -2;
                     img = img_optimizado;
-                    car_ancho = car_ancho_enemigo;
+                    car_ancho = car_ancho_enemigo; //Se cambian las medidas 
                     car_altura = car_altura_enemigo;
+                    bandera_cambio_color = 1
                 }
             }
 
@@ -463,7 +613,6 @@ function detectar_rebaso(){
                 if (x > c.x +car_ancho && c.bandera_rebaso == 0){ //Se encuentra en una posicion adelante del carro enemigo
                     puntaje  += c.objetos * 10;
                     c.bandera_rebaso = 1;
-                    //console.log("puntaje: " + puntaje);
                 }
 
         }
@@ -473,25 +622,35 @@ function detectar_rebaso(){
     
 
     if (total == 1){  //Se hace el cambio de nivel
-        console.log("Cambio de nivel");
+        //console.log("Cambio de nivel");
          dibujar_meta();
      }          
 
 }
 
 function dibujar_meta(){
-    ctx.drawImage(img_meta,canvas.width-200, y_pista,100,210);
-    if (x > canvas.width-300){
+    ctx.drawImage(img_meta,canvas.width-100, y_pista,100,ancho_pista);
+    if (x > canvas.width-200){
                 dibujar_carrito();
 
-                ctx.font="30px Times new roman"
-                ctx.fillStyle="dark blue"
-                ctx.fillText("Felicidades, \n pasaste el nivel: "+(nivel+1),canvas.width/2-100,150);
-
                 clearInterval(IntervaloJuego);
+                
+                if (nivel == 8 | nivel == 9){
+                    tiempo2 = Date.now();
+                    tiempo_resultante = tiempo2 - tiempo1;
+                    tiempo_resultante = Math.floor(tiempo_resultante/1000);
+                    console.log(tiempo_resultante);
+                }
+                
+                ctx.font="30px Times new roman"
 
-                intervalo_carrito -= 2;
-                intervalo_carrito_enemigo -= 2;
+
+                if ((nivel == 8 | nivel == 9) && (tiempo_resultante > tiempo_esperado)){
+                    bandera_fallo_nivel = 1;
+                    ctx.fillText("Perdiste el nivel "+(nivel+1),canvas.width/2-100,80);
+                }else
+                    ctx.fillText("Felicidades, \n pasaste el nivel: "+(nivel+1),canvas.width/2-100,80);
+                
                 document.addEventListener("keydown",detectarTecla);
             }
 
@@ -500,8 +659,17 @@ function dibujar_meta(){
 
 function dibujar_pista(){
     ctx.fillStyle = "#BBB5B1";
-    ctx.fillRect(0,y_pista, canvas.width, ancho_pista );
     
+    if (nivel == 5 && contador == 1)
+        ancho_pista +=100
+    
+    if (nivel == 8 && contador == 1){
+        ancho_pista +=200;
+        console.log(ancho_pista);
+        y_pista = 0;
+    }
+
+    ctx.fillRect(0,y_pista, canvas.width, ancho_pista );
     dibujar_divisiones();
 }
 
