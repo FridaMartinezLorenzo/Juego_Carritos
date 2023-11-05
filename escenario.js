@@ -24,6 +24,8 @@ var img_car_enemigo3 = new Image();
 img_car_enemigo3.src = "assets/blue_car.png";
 var img_meta = new Image();
 img_meta.src = "assets/meta.jpg";
+var img_controles = new Image();
+img_controles.src = "assets/Controls.png";
 
 //Añadimos las variables de la moneda que será el multiplicador del score
 var img_moneda = new Image();
@@ -90,7 +92,7 @@ var y_enemigo2 = 0;
 
 
 //Variables del boton
-inicio_x_boton = canvas.width/2-100;
+inicio_x_boton = 300;
 inicio_y_boton = canvas.height/2;
 ancho_boton = 200;
 alto_boton = 50;
@@ -294,7 +296,7 @@ var nivel = 8;
 //Variable para la aparicion de los carritos
 contador  = 0;
 
-
+//Precargado de imagenes
 img.onload = function (){ 
 }
 img_optimizado.onload = function(){
@@ -309,7 +311,7 @@ img_car_enemigo3.onload = function (){
 }
 img_meta.onload = function (){
 }
-
+img_controles.onload;
 img_start.onload = function (){ //carga la imagen y despues ejecuta la funcion 
     cuadro_inicial();
 }
@@ -322,12 +324,12 @@ function cuadro_inicial(){
     ctx.fillRect(0,0,canvas.width,canvas.height);
 
     ctx.fillStyle = "#FF69B4";
-    ctx.fillRect(canvas.width/2-200,canvas.height/2-100,400,200);
+    ctx.fillRect(200,canvas.height/2-100,400,200);
     
     ctx.fillStyle = "#FF97D9";
-    ctx.fillRect(canvas.width/2-210,canvas.height/2-106,400,200);
+    ctx.fillRect(210,canvas.height/2-106,400,200);
 
-    ctx.drawImage(img_start, canvas.width/2-150,10, 300, 200);
+    ctx.drawImage(img_start,250,10, 300, 200);
 
     //Dibujamos el boton
     ctx.fillStyle = "#FF69B4";
@@ -339,14 +341,16 @@ function cuadro_inicial(){
 
     // Centra el texto en el botón
     var buttonText = "START";
-    var textWidth = ctx.measureText(buttonText).width;
-    var xText = (canvas.width / 2) - (textWidth / 2);
-    var yText = (canvas.height / 2 + 20) + 10;
+    var xText = inicio_x_boton + 70;
+    var yText = (inicio_y_boton + 30);
 
     // Dibuja el texto en el botón
     ctx.fillText(buttonText, xText, yText);
 
+
+    ctx.drawImage(img_controles,canvas.width/2+200,20, 300,300);
 }
+
 
 function cuadro_cambio_nivel(){
     x=0;
@@ -423,6 +427,7 @@ function detectarTecla(e){
            nivel-=1;
            intervalo_carrito += 2;
            limite_contador_carrito_optimizado -=200;
+           puntaje -= 1000; //Descontamos mil puntos
        }
        else{
            nivel+=1;
