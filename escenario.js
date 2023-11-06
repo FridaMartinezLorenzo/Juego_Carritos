@@ -6,14 +6,13 @@ var ctx = canvas.getContext("2d");
 var ancho_pista = 210; // Ancho de la pista, se añaden los 10 por la linea divisoria que vamos a dibujar
 var y_pista = 100;
 
+//Imagenes
 var img = new Image();
 img.src = "assets/yellow_car.png";
 var img_start = new Image();
 img_start.src = "assets/frente_yellow_car.png";
-
 var img_optimizado = new Image();
 img_optimizado.src = "assets/red_car.png";
-
 var img_respaldo = new Image();
 img_respaldo.src = "assets/yellow_car.png";
 var img_car_enemigo = new Image();
@@ -43,12 +42,11 @@ let M =
     ]
 
 
-var x = 0; //Aqui es donde va a empezar
+//Variables para el movimiento del carrito
+var x = 0; 
 var y = y_pista+110;
-
 var dx = 2;
 var dy = 2;
-
 var pasos = 10;
 
 //Variables para el tiempo
@@ -67,6 +65,7 @@ limite_contador_carrito_optimizado = 1600;
 
 var bandera_cambio_color = 0; //La bandera nos ayudará a determinar cuando apagar/encender el cambio de color
 var bandera_fallo_nivel = 0;
+
 
 var contador = 0;
 var puntaje = 0;
@@ -99,13 +98,12 @@ alto_boton = 50;
 
 
 
-//Creamos una matriz donde almacenaremos la información de los niveles
-//Cada nivel es una matriz, cada elemento de la matriz es un objeto que contiene:
-//El carrito o premio que se va a dibujar, en que punto se va a dibujar (con respecto al contador) y su ubicacion x, y
+//Creamos una matriz donde almacenaremos la información de los niveles en matrices
+//La matriz tendrá 10 niveles (0-9)
 let L = [
     [   //primer nivel (0)
         [{objetos:1, appear:100,  x:canvas.width, y:y_pista+10   , bandera_rebaso:0},
-         {objetos:4, appear:400,  x:canvas.width, y:y_pista+110+30  , bandera_rebaso:0},
+         {objetos:3, appear:400,  x:canvas.width, y:y_pista+110  , bandera_rebaso:0},
          {objetos:2, appear:700,  x:canvas.width, y:y_pista+10   , bandera_rebaso:0},
          {objetos:3, appear:1000, x:canvas.width, y:y_pista+110  , bandera_rebaso:0}],
     ],
@@ -236,9 +234,9 @@ let L = [
          {objetos:2, appear:2100,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
          {objetos:1, appear:2100,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
     ],
-    [   //noveno nivel (7)
+    [   //noveno nivel (8)
         [{objetos:2, appear: 50,  x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
-         {objetos:1, appear:250,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0},
+         {objetos:1, appear:150,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0},
          {objetos:4, appear:450,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
          {objetos:3, appear:450,  x:canvas.width, y:y_pista+210  , bandera_rebaso:0}],
         
@@ -250,19 +248,19 @@ let L = [
         [{objetos:3, appear:1200,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0},
          {objetos:4, appear:1200,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
          {objetos:1, appear:1500,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
-         {objetos:2, appear:1700,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0}],
+         {objetos:2, appear:1800,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0}],
         
         [{objetos:2, appear:1700,  x:canvas.width, y:y_pista+310 , bandera_rebaso:0},
          {objetos:3, appear:1700,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
          {objetos:4, appear:1900,  x:canvas.width, y:y_pista+310+30 , bandera_rebaso:0},
-         {objetos:3, appear:1900,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+         {objetos:3, appear:1900,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0}],
         
-        [{objetos:3, appear:1900,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
+        [{objetos:3, appear:1900,  x:canvas.width, y:y_pista+310 , bandera_rebaso:0},
          {objetos:4, appear:2100,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
-         {objetos:2, appear:2100,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
-         {objetos:1, appear:2100,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+         {objetos:2, appear:2200,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:1, appear:2100,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0}],
     ],
-    [   //decimo nivel (7)
+    [   //decimo nivel (9)
         [{objetos:2, appear: 50,  x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
          {objetos:1, appear:250,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0},
          {objetos:4, appear:450,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
@@ -290,34 +288,24 @@ let L = [
     ]
     
 ]
-    
-var nivel = 8;
+
+var nivel = 0;
 
 //Variable para la aparicion de los carritos
 contador  = 0;
 
 //Precargado de imagenes
-img.onload = function (){ 
-}
-img_optimizado.onload = function(){
-}
-img_respaldo.onload = function(){
-}
-img_car_enemigo.onload = function (){ 
-}
-img_car_enemigo2.onload = function (){
-}
-img_car_enemigo3.onload = function (){
-}
-img_meta.onload = function (){
-}
+img.onload;
+img_optimizado.onload;
+img_respaldo.onload;
+img_car_enemigo.onload;
+img_car_enemigo2.onload;
+img_car_enemigo3.onload;
+img_meta.onload;
 img_controles.onload;
-img_start.onload = function (){ //carga la imagen y despues ejecuta la funcion 
+img_start.onload = function(){
     cuadro_inicial();
 }
-document.addEventListener("keydown",detectarTecla);
-canvas.addEventListener("click", detectarClick);
-
 
 function cuadro_inicial(){
     ctx.fillStyle = "#FFFFFF";
@@ -350,6 +338,9 @@ function cuadro_inicial(){
 
     ctx.drawImage(img_controles,canvas.width/2+200,20, 300,300);
 }
+
+document.addEventListener("keydown",detectarTecla);
+canvas.addEventListener("click", detectarClick);
 
 
 function cuadro_cambio_nivel(){
