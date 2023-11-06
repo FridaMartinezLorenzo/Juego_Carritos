@@ -59,7 +59,7 @@ var tiempo_esperado= 50; //Segundos
 car_ancho = 150;
 car_altura = 100;
 margen_desaparicion_carrito = 140;
-intervalo_carrito = 30;
+intervalo_carrito = 25;
 contador_carrito_optimizado = 0;
 limite_contador_carrito_optimizado = 1600;
 
@@ -91,15 +91,15 @@ var y_enemigo2 = 0;
 
 
 //Variables del boton
-inicio_x_boton = 300;
+inicio_x_boton = (canvas.width/2)-100;
 inicio_y_boton = canvas.height/2;
 ancho_boton = 200;
 alto_boton = 50;
 
 
 
-//Creamos una matriz donde almacenaremos la información de los niveles en matrices
-//La matriz tendrá 10 niveles (0-9)
+//Creamos una arreglo de matrices para alamcenar la informacion sobre los carritos que apareceran en el nivel
+
 let L = [
     [   //primer nivel (0)
         [{objetos:1, appear:100,  x:canvas.width, y:y_pista+10   , bandera_rebaso:0},
@@ -290,7 +290,6 @@ let L = [
 ]
 
 var nivel = 0;
-
 //Variable para la aparicion de los carritos
 contador  = 0;
 
@@ -312,12 +311,12 @@ function cuadro_inicial(){
     ctx.fillRect(0,0,canvas.width,canvas.height);
 
     ctx.fillStyle = "#FF69B4";
-    ctx.fillRect(200,canvas.height/2-100,400,200);
+    ctx.fillRect(canvas.width/2-200,canvas.height/2-100,400,200);
     
     ctx.fillStyle = "#FF97D9";
-    ctx.fillRect(210,canvas.height/2-106,400,200);
+    ctx.fillRect(canvas.width/2-210,canvas.height/2-106,400,200);
 
-    ctx.drawImage(img_start,250,10, 300, 200);
+    ctx.drawImage(img_start,(canvas.width / 2)-150,10, 300, 200);
 
     //Dibujamos el boton
     ctx.fillStyle = "#FF69B4";
@@ -329,19 +328,19 @@ function cuadro_inicial(){
 
     // Centra el texto en el botón
     var buttonText = "START";
-    var xText = inicio_x_boton + 70;
-    var yText = (inicio_y_boton + 30);
+    var xText = (canvas.width / 2) - 30;
+    var yText = (canvas.height / 2) + 30;
 
     // Dibuja el texto en el botón
     ctx.fillText(buttonText, xText, yText);
-
-
-    ctx.drawImage(img_controles,canvas.width/2+200,20, 300,300);
 }
 
-document.addEventListener("keydown",detectarTecla);
-canvas.addEventListener("click", detectarClick);
+function cuadro_instrucciones(){
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
 
+    ctx.drawImage(img_controles,200,20, 300,300);
+}
 
 function cuadro_cambio_nivel(){
     x=0;
@@ -378,6 +377,8 @@ function cuadro_cambio_nivel(){
 
 }
 
+canvas.addEventListener("click", detectarClick);
+
 function detectarClick(event){
     //console.log("click");
     var rect = canvas.getBoundingClientRect();
@@ -387,12 +388,22 @@ function detectarClick(event){
     // Verifica si el clic está dentro del botón, INICIA EL JUEGOOOOOO
     if (x_click >= inicio_x_boton &&  x_click <= inicio_x_boton+ancho_boton && y_click >= inicio_y_boton  && y_click <= inicio_y_boton+alto_boton ) {
             contador = 0;
-            IntervaloJuego = setInterval(draw,intervalo_carrito);
-        //setInterval(dibujar_objetos,intervalo_carrito_enemigo);
+            if (nivel == 0){
+                cuadro_instrucciones();
+                document.addEventListener("keydown",detectarTecla);
+                ctx.fillStyle = "black";
+                ctx.fillText("Presione Enter para continuar...", 650, canvas.height/2);
+            }else{
+                IntervaloJuego = setInterval(draw,intervalo_carrito);
+
+            }
     }
 }
 
 function detectarTecla(e){
+    if (e.keyCode == 13 && nivel == 0)
+        IntervaloJuego = setInterval(draw,intervalo_carrito);
+
     if (e.keyCode == 39){
         //console.log("Avanzando a derecha")
         x +=  pasos;
@@ -422,7 +433,7 @@ function detectarTecla(e){
        }
        else{
            nivel+=1;
-           intervalo_carrito -= 2;
+           intervalo_carrito -= 1;
            limite_contador_carrito_optimizado +=200;
        }
        cuadro_cambio_nivel();
@@ -447,6 +458,8 @@ function detectarTecla(e){
     if (x >= canvas.width-margen_desaparicion_carrito)
         x = canvas.width-margen_desaparicion_carrito;
 }
+
+document.addEventListener("keydown",detectarTecla);
 
 function draw(){
     draw_escenario();
@@ -476,6 +489,7 @@ function draw(){
         tiempo1 = Date.now();
     }
 }
+
 
 function draw_escenario(){
      //Rosa y morado #EE97E5
