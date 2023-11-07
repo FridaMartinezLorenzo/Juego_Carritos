@@ -59,7 +59,7 @@ var tiempo_esperado= 50; //Segundos
 car_ancho = 150;
 car_altura = 100;
 margen_desaparicion_carrito = 140;
-intervalo_carrito = 15;
+intervalo_carrito = 25;
 contador_carrito_optimizado = 0;
 limite_contador_carrito_optimizado = 1600;
 
