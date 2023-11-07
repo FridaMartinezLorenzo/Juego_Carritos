@@ -151,8 +151,8 @@ let L = [
          {objetos:3, appear:2900,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0}],
     ],
     [   //quinto nivel (4)
-        [{objetos:2, appear: 50,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
-         {objetos:2, appear:250,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+        [{objetos:1, appear: 50,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:3, appear:250,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
          {objetos:4, appear:350,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
          {objetos:1, appear:550,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0}],
 
@@ -168,7 +168,7 @@ let L = [
     ],
     [   //sexto nivel (5)
         [{objetos:2, appear: 50,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
-         {objetos:2, appear:250,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:1, appear:250,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
          {objetos:4, appear:350,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
          {objetos:1, appear:550,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0}],
 
@@ -209,7 +209,7 @@ let L = [
          {objetos:3, appear:2100,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
     ],
     [   //octavo nivel (7)
-        [{objetos:2, appear: 50,  x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
+        [{objetos:3, appear: 50,  x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
          {objetos:1, appear:250,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0},
          {objetos:4, appear:450,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
          {objetos:3, appear:450,  x:canvas.width, y:y_pista+210  , bandera_rebaso:0}],
@@ -235,10 +235,10 @@ let L = [
          {objetos:1, appear:2100,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
     ],
     [   //noveno nivel (8)
-        [{objetos:2, appear: 50,  x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
-         {objetos:1, appear:150,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0},
+        [{objetos:3, appear: 50,  x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
+         {objetos:3, appear:150,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0},
          {objetos:4, appear:450,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
-         {objetos:3, appear:450,  x:canvas.width, y:y_pista+210  , bandera_rebaso:0}],
+         {objetos:1, appear:450,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0}],
         
         [{objetos:1, appear:450,   x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
          {objetos:3, appear:800,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
@@ -261,10 +261,10 @@ let L = [
          {objetos:1, appear:2100,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0}],
     ],
     [   //decimo nivel (9)
-        [{objetos:2, appear: 50,  x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
-         {objetos:1, appear:250,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0},
+        [{objetos:2, appear: 50,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:1, appear:250,  x:canvas.width, y:y_pista+310 , bandera_rebaso:0},
          {objetos:4, appear:450,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
-         {objetos:3, appear:450,  x:canvas.width, y:y_pista+210  , bandera_rebaso:0}],
+         {objetos:3, appear:450,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0}],
 
         [{objetos:1, appear:450,   x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
          {objetos:3, appear:800,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
@@ -289,7 +289,7 @@ let L = [
         [{objetos:2, appear:2200,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0},
          {objetos:3, appear:2300,  x:canvas.width, y:y_pista+310 , bandera_rebaso:0},
          {objetos:1, appear:2300,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
-         {objetos:3, appear:2600,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0}],
+         {objetos:3, appear:2600,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
     ]
     
 ]
@@ -477,9 +477,7 @@ function main(){
 
     ctx.font="24px Arial"
     ctx.fillStyle="black"
-    ctx.fillText("Nivel:"+(nivel+1)+"     Score:"+puntaje,canvas.width-400,20);
-
-    //ctx.fillText("Nivel:"+(nivel+1),canvas.width-300,20);
+    ctx.fillText("Nivel:"+(nivel+1)+"     Score:"+puntaje,canvas.width/2,20);
 
     x -= dx; //Siempre hacia atrás para que se simule el movimiento de que la pista se mueve
     dibujar_objetos();
@@ -674,7 +672,7 @@ function dibujar_pista(){
         ancho_pista +=100
     
     if (nivel == 6 && contador == 1){
-        ancho_pista +=200;
+        ancho_pista +=100;
         console.log(ancho_pista);
         y_pista = 0;
     }
