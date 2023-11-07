@@ -59,7 +59,7 @@ var tiempo_esperado= 50; //Segundos
 car_ancho = 150;
 car_altura = 100;
 margen_desaparicion_carrito = 140;
-intervalo_carrito = 25;
+intervalo_carrito = 15;
 contador_carrito_optimizado = 0;
 limite_contador_carrito_optimizado = 1600;
 
@@ -255,7 +255,7 @@ let L = [
          {objetos:4, appear:1900,  x:canvas.width, y:y_pista+310+30 , bandera_rebaso:0},
          {objetos:3, appear:1900,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0}],
         
-        [{objetos:3, appear:1900,  x:canvas.width, y:y_pista+310 , bandera_rebaso:0},
+        [{objetos:3, appear:1900,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
          {objetos:4, appear:2100,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
          {objetos:2, appear:2200,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
          {objetos:1, appear:2100,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0}],
@@ -269,22 +269,27 @@ let L = [
         [{objetos:1, appear:450,   x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
          {objetos:3, appear:800,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
          {objetos:3, appear:900,  x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
-         {objetos:3, appear:950,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0}],
+         {objetos:3, appear:950,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
 
-        [{objetos:3, appear:1200,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0},
-         {objetos:4, appear:1200,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
+        [{objetos:3, appear:1200,  x:canvas.width, y:y_pista+310 , bandera_rebaso:0},
+         {objetos:4, appear:1200,  x:canvas.width, y:y_pista+10+30 , bandera_rebaso:0},
          {objetos:1, appear:1500,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
-         {objetos:2, appear:1700,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0}],
+         {objetos:2, appear:1500,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
 
-        [{objetos:2, appear:1700,  x:canvas.width, y:y_pista+310 , bandera_rebaso:0},
+        [{objetos:2, appear:1700,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0},
          {objetos:3, appear:1700,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
          {objetos:4, appear:1900,  x:canvas.width, y:y_pista+310+30 , bandera_rebaso:0},
          {objetos:3, appear:1900,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
 
-        [{objetos:3, appear:1900,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0},
-         {objetos:4, appear:2100,  x:canvas.width, y:y_pista+110+30 , bandera_rebaso:0},
-         {objetos:2, appear:2100,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
-         {objetos:1, appear:2100,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0}],
+        [{objetos:3, appear:1900,  x:canvas.width, y:y_pista+110 , bandera_rebaso:0},
+         {objetos:4, appear:2100,  x:canvas.width, y:y_pista+10+30 , bandera_rebaso:0},
+         {objetos:2, appear:2100,  x:canvas.width, y:y_pista+310  , bandera_rebaso:0},
+         {objetos:1, appear:2100,  x:canvas.width, y:y_pista+10 , bandera_rebaso:0}],
+        
+        [{objetos:2, appear:2200,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0},
+         {objetos:3, appear:2300,  x:canvas.width, y:y_pista+310 , bandera_rebaso:0},
+         {objetos:1, appear:2300,  x:canvas.width, y:y_pista+10  , bandera_rebaso:0},
+         {objetos:3, appear:2600,  x:canvas.width, y:y_pista+210 , bandera_rebaso:0}],
     ]
     
 ]
@@ -368,9 +373,8 @@ function cuadro_cambio_nivel(){
 
     // Centra el texto en el botón
     var buttonText = "START";
-    var textWidth = ctx.measureText(buttonText).width;
-    var xText = (canvas.width / 2) - (textWidth / 2);
-    var yText = (canvas.height / 2 + 20) + 10;
+    var xText = (canvas.width / 2) - 30;
+    var yText = (canvas.height / 2 + 30);
 
     // Dibuja el texto en el botón
     ctx.fillText(buttonText, xText, yText);
@@ -378,6 +382,7 @@ function cuadro_cambio_nivel(){
 }
 
 canvas.addEventListener("click", detectarClick);
+document.addEventListener("keydown",detectarTecla);
 
 function detectarClick(event){
     //console.log("click");
@@ -386,23 +391,22 @@ function detectarClick(event){
     var y_click = event.clientY - rect.top;
 
     // Verifica si el clic está dentro del botón, INICIA EL JUEGOOOOOO
-    if (x_click >= inicio_x_boton &&  x_click <= inicio_x_boton+ancho_boton && y_click >= inicio_y_boton  && y_click <= inicio_y_boton+alto_boton ) {
+    if (x_click >= inicio_x_boton &&  x_click <= inicio_x_boton+ancho_boton 
+        && y_click >= inicio_y_boton  && y_click <= inicio_y_boton+alto_boton ) {
             contador = 0;
             if (nivel == 0){
                 cuadro_instrucciones();
-                document.addEventListener("keydown",detectarTecla);
                 ctx.fillStyle = "black";
                 ctx.fillText("Presione Enter para continuar...", 650, canvas.height/2);
             }else{
-                IntervaloJuego = setInterval(draw,intervalo_carrito);
-
+                IntervaloJuego = setInterval(main,intervalo_carrito);
             }
     }
 }
 
 function detectarTecla(e){
     if (e.keyCode == 13 && nivel == 0)
-        IntervaloJuego = setInterval(draw,intervalo_carrito);
+        IntervaloJuego = setInterval(main,intervalo_carrito);
 
     if (e.keyCode == 39){
         //console.log("Avanzando a derecha")
@@ -430,14 +434,19 @@ function detectarTecla(e){
            intervalo_carrito += 2;
            limite_contador_carrito_optimizado -=200;
            puntaje -= 1000; //Descontamos mil puntos
+           bandera_fallo_nivel = 0;
        }
        else{
            nivel+=1;
+           console.log("Nivel: "+nivel);
+           if (nivel == 10) {
+               fin_de_juego();
+               return;
+           }
            intervalo_carrito -= 1;
            limite_contador_carrito_optimizado +=200;
-       }
-       cuadro_cambio_nivel();
-       canvas.addEventListener("click", detectarClick);
+        }
+        cuadro_cambio_nivel();
     }
 
     if (y <= y_pista)
@@ -459,10 +468,8 @@ function detectarTecla(e){
         x = canvas.width-margen_desaparicion_carrito;
 }
 
-document.addEventListener("keydown",detectarTecla);
-
-function draw(){
-    draw_escenario();
+function main(){
+    dibuja_escenario();
     dibujar_carrito();
     detectar_rebaso();
     detectar_colision_objeto();
@@ -475,7 +482,7 @@ function draw(){
     //ctx.fillText("Nivel:"+(nivel+1),canvas.width-300,20);
 
     x -= dx; //Siempre hacia atrás para que se simule el movimiento de que la pista se mueve
-    dibujar_carritos_enemigos();
+    dibujar_objetos();
 
     if (x < 0)
         x = 0;
@@ -491,7 +498,7 @@ function draw(){
 }
 
 
-function draw_escenario(){
+function dibuja_escenario(){
      //Rosa y morado #EE97E5
      ctx.fillStyle = "#FF97D9";
      ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -502,7 +509,7 @@ function dibujar_carrito(){
     ctx.drawImage(img, x, y, car_ancho, car_altura);
 }
 
-function dibujar_carritos_enemigos(){
+function dibujar_objetos(){
     for (j = 0; j < L[nivel].length; j++ ){
         for (i = 0; i < L[nivel][j].length; i++)
         {
@@ -510,7 +517,7 @@ function dibujar_carritos_enemigos(){
             if(c.objetos != 0){
                 //Evluamos si es el momento en el que debe de aparecer el carrito
                 if (contador >= c.appear){
-                    dibujar_objetos(j,i);
+                    dibujar_objeto(j,i);
                 }
             }
         }
@@ -518,7 +525,7 @@ function dibujar_carritos_enemigos(){
 
 }
 
-function dibujar_objetos(j,i){
+function dibujar_objeto(j,i){
     obj = L[nivel][j][i];
 
     if (bandera_cambio_color == 1){//Contador de la duración el cambio de color
@@ -555,7 +562,6 @@ function detectar_colision_objeto(){
             
             if (c.x + (pelotaRadio*2) > 0 && c.x < canvas.width && c.objetos == 4){ //Evaluamos que la moneda este en pantalla
                 
-                //console.log(L[nivel]);
                 if( x < c.x+(pelotaRadio*2) && x+car_ancho > c.x && y < c.y+(pelotaRadio*2) && y+car_altura>c.y){
                     console.log("colisiono la moneda");
                     puntaje*=3; //Triplica puntaje
@@ -624,15 +630,10 @@ function detectar_rebaso(){
                     puntaje  += c.objetos * 10;
                     c.bandera_rebaso = 1;
                 }
-
         }
     }
 
-
-    
-
     if (total == 1){  //Se hace el cambio de nivel
-        //console.log("Cambio de nivel");
          dibujar_meta();
      }          
 
@@ -661,7 +662,6 @@ function dibujar_meta(){
                 }else
                     ctx.fillText("Felicidades, \n pasaste el nivel: "+(nivel+1),canvas.width/2-100,80);
                 
-                document.addEventListener("keydown",detectarTecla);
             }
 
 }
@@ -673,7 +673,7 @@ function dibujar_pista(){
     if (nivel == 5 && contador == 1)
         ancho_pista +=100
     
-    if (nivel == 8 && contador == 1){
+    if (nivel == 6 && contador == 1){
         ancho_pista +=200;
         console.log(ancho_pista);
         y_pista = 0;
@@ -697,4 +697,34 @@ function dibujaMoneda(c){
     ctx.drawImage(img_moneda,M[indice][0],M[indice][1],M[indice][2],M[indice][3],c.x,c.y, M[indice][4]/2,M[indice][5]/2);
     indice = (indice+1) % 6;
 
+}
+
+function fin_de_juego(){
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    
+    nivel = 0;
+    puntaje = 0;
+    intervalo_carrito = 25;
+    
+    ctx.font="50px Times new roman"
+    ctx.fillStyle="#BF398C"
+    ctx.fillText("¡¡FELICIDADES, GANASTE !!",canvas.width/2-300,150);
+
+     //Dibujamos el boton
+     ctx.fillStyle = "#FF69B4";
+     ctx.fillRect(inicio_x_boton,inicio_y_boton,250,50);
+ 
+     // Configura el estilo del texto
+     ctx.font = "20px Times New Roman";
+     ctx.fillStyle = "white";
+ 
+     // Centra el texto en el botón
+     var buttonText = "JUGAR DE NUEVO";
+     var xText = (canvas.width / 2) - 60;
+     var yText = (canvas.height / 2 + 30);
+ 
+     // Dibuja el texto en el botón
+     ctx.fillText(buttonText, xText, yText);
+    
 }
